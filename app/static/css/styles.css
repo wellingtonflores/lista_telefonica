@@ -1,0 +1,92 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 960px;
+    margin: auto;
+}
+
+.title {
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.card {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.card h2 {
+    background-color: #e3e7eb;
+    padding: 12px 20px;
+    margin: 0;
+    font-size: 17px;
+    color: #1c1c1c;
+    border-bottom: 1px solid #d3d3d3;
+}
+
+.card .address {
+    padding: 10px 20px 5px 20px;
+    font-size: 14px;
+    color: #444;
+    font-weight: bold;
+}
+
+.division {
+    margin: 15px 20px 8px 20px;
+    padding: 6px 10px;
+    background-color: #f1f3f5;
+    font-weight: bold;
+    font-size: 14px;
+    color: #2c3e50;
+    border-left: 4px solid #adb5bd;
+}
+
+.contact-list {
+    list-style: none;
+    padding: 0 20px;
+    margin: 0;
+}
+
+.contact-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+}
+
+.contact-list li:last-child {
+    border-bottom: none;
+}
+
+.label {
+    font-weight: normal;
+    color: #222;
+}
+
+.phone {
+    font-weight: bold;
+    color: #000;
+}
+
+.card-body {
+    transition: max-height 0.3s ease-out, padding 0.3s ease;
+    overflow: hidden;
+}
+
+.card-body.collapsed {
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
