@@ -27,8 +27,14 @@ def get_orgao():
         orgao_data = {
             "idOrgao": orgao.id,
             "nomeOrgao": orgao.nome,
-            "enderecoOrgao": orgao.endereco,
-            "municipio": orgao.municipio,
+            "logradouroOrgao": orgao.logradouro,
+            "numeroOrgao": orgao.numero,
+            "complemento": orgao.complemento,
+            "bairro": orgao.bairro,
+            "cidade": orgao.cidade,
+            "cep": orgao.cep,
+            "telefone": orgao.telefone,
+            "email": orgao.email,           
             "divisoes": [
                 {
                     "idDivisao": d.id,

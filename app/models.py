@@ -6,8 +6,14 @@ db = SQLAlchemy()
 class Orgao(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(100), nullable=False)
-    endereco = db.Column(db.String(200), nullable=True)
-    municipio = db.Column(db.String(200), nullable=True)
+    logradouro= db.Column(db.String(200), nullable=True)
+    numero = db.Column(db.Integer, nullable=False)
+    complemento = db.Column(db.String(100), nullable = True)
+    bairro = db.Column(db.String(100), nullable = True)
+    cidade = db.Column(db.String(200), nullable=True)
+    cep = db.Column(db.String(100), nullable = True)
+    telefone = db.Column(db.String(100), nullable = True)
+    email = db.Column(db.String(100), nullable = True)
 
     divisoes = db.relationship(
         "Divisao", back_populates="orgao", cascade="all, delete-orphan"

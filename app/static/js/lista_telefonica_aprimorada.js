@@ -24,93 +24,134 @@ function renderizarOrgaos(orgaos) {
   const container = document.getElementById("container");
 
   orgaos.forEach((orgao) => {
-    const card = document.createElement("div");
-    card.className = "card";
-    card.dataset.municipio = orgao.municipio || "";
+    if (orgao.divisoes.length > 0 || orgao.setores.length > 0) {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.dataset.municipio = orgao.cidade || "";
 
-    const header = document.createElement("div");
-    header.className = "card-header";
-    header.innerHTML = `<h2>${orgao.nomeOrgao || "Nome não informado"}</h2>`;
-    const btnToggle = document.createElement("button");
-    btnToggle.textContent = "⇩";
-    btnToggle.className = "btn-toggle";
-    header.appendChild(btnToggle);
-    card.appendChild(header);
+      const header = document.createElement("div");
+      header.className = "card-header";
+      header.style.display = "flex";
+      header.style.alignItems = "center";
 
-    const body = document.createElement("div");
-    body.className = "card-body";
+      const tituloWrapper = document.createElement("div");
+      tituloWrapper.style.display = "flex";
+      tituloWrapper.style.alignItems = "baseline";
+      tituloWrapper.style.flexShrink = "0";
+      tituloWrapper.style.whiteSpace = "nowrap";
+      tituloWrapper.style.overflow = "hidden";
+      tituloWrapper.style.textOverflow = "ellipsis";
 
-    const endereco = document.createElement("div");
-    endereco.className = "address";
-    endereco.textContent = orgao.enderecoOrgao
-      ? `${orgao.enderecoOrgao} — ${orgao.municipio || ""}`
-      : "Endereço não informado";
-    body.appendChild(endereco);
+      const titulo = document.createElement("h2");
+      titulo.textContent = orgao.nomeOrgao || "Nome não informado";
+      titulo.style.margin = "0";
 
-    if (orgao.divisoes.length === 0) {
-      const ul = document.createElement("ul");
-      ul.className = "contact-list";
-      orgao.setores.forEach((setor) => {
-        const li = document.createElement("li");
-        li.innerHTML = `<span class="label">${setor.nomeSetor}</span>
+      const spanId = document.createElement("small");
+      spanId.textContent = ` (${orgao.idOrgao || ""})`;
+      spanId.style.fontWeight = "normal";
+      spanId.style.marginLeft = "4px";
+
+      tituloWrapper.append(titulo, spanId);
+
+      const telefoneSpan = document.createElement("span");
+      telefoneSpan.textContent =
+        orgao.telefone?.trim() || "Telefone não informado";
+      telefoneSpan.style.flex = "1";
+      telefoneSpan.style.textAlign = "center";
+
+      const emailSpan = document.createElement("span");
+      emailSpan.textContent = orgao.email?.trim() || "Email não informado";
+      emailSpan.style.flex = "0";
+      emailSpan.style.margin = "0 1rem 0 0";
+
+      const btnToggle = document.createElement("button");
+      btnToggle.textContent = "⇩";
+      btnToggle.className = "btn-toggle";
+      btnToggle.style.flex = "0";
+
+      header.innerHTML = "";
+      header.append(tituloWrapper, telefoneSpan, emailSpan, btnToggle);
+      card.appendChild(header);
+
+      const body = document.createElement("div");
+      body.className = "card-body";
+
+      const endereco = document.createElement("div");
+      endereco.className = "address";
+      const numeroECpl = orgao.complemento
+        ? `${orgao.numeroOrgao}, ${orgao.complemento}`
+        : `${orgao.numeroOrgao}`;
+
+      endereco.textContent = orgao.cep
+        ? `${orgao.logradouroOrgao}, ${numeroECpl} — ${orgao.cidade || ""}`
+        : "Endereço não informado";
+      body.appendChild(endereco);
+
+      if (orgao.divisoes.length === 0) {
+        const ul = document.createElement("ul");
+        ul.className = "contact-list";
+        orgao.setores.forEach((setor) => {
+          const li = document.createElement("li");
+          li.innerHTML = `<span class="label">${setor.nomeSetor}</span>
                         <span class="phone">${setor.telefoneSetor}</span>`;
-        ul.appendChild(li);
-      });
-      body.appendChild(ul);
-    } else if (orgao.divisoes.length > 0 && orgao.setores.length > 0) {
-      const setoresUl = document.createElement("ul");
-      setoresUl.className = "contact-list";
-      orgao.setores.forEach((setor) => {
-        const li = document.createElement("li");
-        li.innerHTML = `
+          ul.appendChild(li);
+        });
+        body.appendChild(ul);
+      } else if (orgao.divisoes.length > 0 && orgao.setores.length > 0) {
+        const setoresUl = document.createElement("ul");
+        setoresUl.className = "contact-list";
+        orgao.setores.forEach((setor) => {
+          const li = document.createElement("li");
+          li.innerHTML = `
       <span class="label">${setor.nomeSetor}</span>
       <span class="phone">${setor.telefoneSetor}</span>`;
-        setoresUl.appendChild(li);
-      });
-      body.appendChild(setoresUl);
-
-      orgao.divisoes.forEach((divisao) => {
-        const divTitle = document.createElement("div");
-        divTitle.className = "division";
-        divTitle.textContent = divisao.nomeDivisao;
-        body.appendChild(divTitle);
-
-        const ul = document.createElement("ul");
-        ul.className = "contact-list";
-        divisao.setores.forEach((setor) => {
-          const li = document.createElement("li");
-          li.innerHTML = `<span class="label">${setor.nomeSetor}</span>
-                          <span class="phone">${setor.telefoneSetor}</span>`;
-          ul.appendChild(li);
+          setoresUl.appendChild(li);
         });
-        body.appendChild(ul);
-      });
-    } else {
-      orgao.divisoes.forEach((divisao) => {
-        const divTitle = document.createElement("div");
-        divTitle.className = "division";
-        divTitle.textContent = divisao.nomeDivisao;
-        body.appendChild(divTitle);
+        body.appendChild(setoresUl);
 
-        const ul = document.createElement("ul");
-        ul.className = "contact-list";
-        divisao.setores.forEach((setor) => {
-          const li = document.createElement("li");
-          li.innerHTML = `<span class="label">${setor.nomeSetor}</span>
+        orgao.divisoes.forEach((divisao) => {
+          const divTitle = document.createElement("div");
+          divTitle.className = "division";
+          divTitle.textContent = divisao.nomeDivisao;
+          body.appendChild(divTitle);
+
+          const ul = document.createElement("ul");
+          ul.className = "contact-list";
+          divisao.setores.forEach((setor) => {
+            const li = document.createElement("li");
+            li.innerHTML = `<span class="label">${setor.nomeSetor}</span>
                           <span class="phone">${setor.telefoneSetor}</span>`;
-          ul.appendChild(li);
+            ul.appendChild(li);
+          });
+          body.appendChild(ul);
         });
-        body.appendChild(ul);
+      } else {
+        orgao.divisoes.forEach((divisao) => {
+          const divTitle = document.createElement("div");
+          divTitle.className = "division";
+          divTitle.textContent = divisao.nomeDivisao;
+          body.appendChild(divTitle);
+
+          const ul = document.createElement("ul");
+          ul.className = "contact-list";
+          divisao.setores.forEach((setor) => {
+            const li = document.createElement("li");
+            li.innerHTML = `<span class="label">${setor.nomeSetor}</span>
+                          <span class="phone">${setor.telefoneSetor}</span>`;
+            ul.appendChild(li);
+          });
+          body.appendChild(ul);
+        });
+      }
+
+      card.appendChild(body);
+      container.appendChild(card);
+
+      btnToggle.addEventListener("click", () => {
+        const isCollapsed = body.classList.toggle("collapsed");
+        btnToggle.textContent = isCollapsed ? "⇨" : "⇩";
       });
     }
-
-    card.appendChild(body);
-    container.appendChild(card);
-
-    btnToggle.addEventListener("click", () => {
-      const isCollapsed = body.classList.toggle("collapsed");
-      btnToggle.textContent = isCollapsed ? "⇨" : "⇩";
-    });
   });
 }
 
@@ -119,7 +160,7 @@ function inicializarBusca(orgaos) {
 
   const inputBusca = document.createElement("input");
   inputBusca.id = "busca";
-  inputBusca.placeholder = "Buscar órgão";
+  inputBusca.placeholder = "Número do órgão";
   inputBusca.className = "search-input";
   inputBusca.style.marginLeft = "10px";
 
@@ -128,7 +169,7 @@ function inicializarBusca(orgaos) {
   selectMunicipio.className = "select-municipio";
   selectMunicipio.style.marginLeft = "10px";
 
-  const municipios = [...new Set(orgaos.map((o) => o.municipio))].sort();
+  const municipios = [...new Set(orgaos.map((o) => o.cidade))].sort();
   selectMunicipio.innerHTML =
     `<option value="">Todos os municípios</option>` +
     municipios.map((m) => `<option value="${m}">${m}</option>`).join("");
